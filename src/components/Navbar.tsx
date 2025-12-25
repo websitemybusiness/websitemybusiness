@@ -31,10 +31,9 @@ const Navbar = () => {
       <div className="container flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-button">
-            <span className="text-xl font-bold text-primary-foreground">W</span>
-          </div>
-          <span className="text-xl font-bold">WebCraft</span>
+          <span className="text-xl font-bold tracking-tight">
+            <span className="text-primary">website</span>mybusiness
+          </span>
         </a>
 
         {/* Desktop nav */}
