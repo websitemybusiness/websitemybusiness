@@ -1,4 +1,5 @@
 import { Phone, Mail } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
@@ -7,10 +8,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <a href="/" className="flex items-center gap-2 mb-6">
-              <span className="text-xl font-bold tracking-tight">
-                <span className="text-primary">website</span>mybusiness
-              </span>
+            <a href="/" className="flex items-center mb-6">
+              <img src={logo} alt="websitemybusiness" className="h-12 w-auto" />
             </a>
             <p className="text-muted-foreground mb-6 max-w-md leading-relaxed">
               We help businesses establish a powerful online presence through expert web design, 

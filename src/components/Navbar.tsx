@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { href: "#services", label: "Services" },
@@ -29,10 +30,8 @@ const Navbar = () => {
     >
       <div className="container flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight">
-            <span className="text-primary">website</span>mybusiness
-          </span>
+        <a href="/" className="flex items-center">
+          <img src={logo} alt="websitemybusiness" className="h-10 w-auto" />
         </a>
 
         {/* Desktop nav */}
