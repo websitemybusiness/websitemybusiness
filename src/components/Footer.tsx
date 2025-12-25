@@ -49,7 +49,7 @@ const Footer = () => {
             <h4 className="font-bold mb-6">Contact Us</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-primary mt-0.5" />
+                <Phone className="w-5 h-5 text-primary mt-0.5" aria-hidden="true" />
                 <a href="tel:+2348032655092" className="text-muted-foreground hover:text-primary transition-colors">+234 803 265 5092</a>
               </li>
               <li className="flex items-start gap-3">
@@ -59,7 +59,7 @@ const Footer = () => {
                 <a href="https://wa.me/2348027441364" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">+234 802 744 1364</a>
               </li>
               <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary mt-0.5" />
+                <Mail className="w-5 h-5 text-primary mt-0.5" aria-hidden="true" />
                 <a href="mailto:hello@websitemybusiness.com" className="text-muted-foreground hover:text-primary transition-colors">hello@websitemybusiness.com</a>
               </li>
             </ul>

@@ -24,11 +24,11 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="relative py-24 bg-secondary/30">
+    <section className="relative py-24 bg-secondary/30" aria-labelledby="features-heading">
       <div className="container">
         {/* Main headline */}
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          <h2 id="features-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             We Manage Your Business Online
             <br />
             <span className="text-gradient">So You Don't Have To</span>
@@ -45,10 +45,10 @@ const FeaturesSection = () => {
             >
               {/* Icon with glow */}
               <div className="relative inline-flex mb-8">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-primary flex items-center justify-center group-hover:shadow-glow transition-all duration-500">
-                  <feature.icon className="w-10 h-10 text-primary-foreground" />
+                <div className="w-20 h-20 rounded-2xl bg-gradient-primary flex items-center justify-center group-hover:shadow-glow transition-all duration-500" aria-hidden="true">
+                  <feature.icon className="w-10 h-10 text-primary-foreground" aria-hidden="true" />
                 </div>
-                <div className="absolute inset-0 w-20 h-20 rounded-2xl bg-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 w-20 h-20 rounded-2xl bg-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
               </div>
 
               {/* Content */}

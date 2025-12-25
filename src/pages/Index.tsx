@@ -8,15 +8,19 @@ import ChatWidget from "@/components/ChatWidget";
 
 const Index = () => {
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <ServicesSection />
-      <FeaturesSection />
-      <CTASection />
+    <>
+      <header>
+        <Navbar />
+      </header>
+      <main className="min-h-screen bg-background">
+        <HeroSection />
+        <ServicesSection />
+        <FeaturesSection />
+        <CTASection />
+      </main>
       <Footer />
       <ChatWidget />
-    </main>
+    </>
   );
 };
 
