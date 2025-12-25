@@ -5,6 +5,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import TrustSection from "@/components/TrustSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <TrustSection />
       <CTASection />
       <Footer />
+      <ChatWidget />
     </main>
   );
 };
