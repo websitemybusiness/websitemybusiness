@@ -8,10 +8,9 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <a href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-                <span className="text-xl font-bold text-primary-foreground">W</span>
-              </div>
-              <span className="text-xl font-bold">WebCraft</span>
+              <span className="text-xl font-bold tracking-tight">
+                <span className="text-primary">website</span>mybusiness
+              </span>
             </a>
             <p className="text-muted-foreground mb-6 max-w-md leading-relaxed">
               We help businesses establish a powerful online presence through expert web design, 
@@ -54,8 +53,8 @@ const Footer = () => {
                 <span className="text-muted-foreground">(555) 123-4567</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary mt-0.5" />
-                <span className="text-muted-foreground">hello@webcraft.com</span>
+              <Mail className="w-5 h-5 text-primary mt-0.5" />
+                <span className="text-muted-foreground">hello@websitemybusiness.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-primary mt-0.5" />
@@ -68,7 +67,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-border/50 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} WebCraft. All rights reserved.
+            © {new Date().getFullYear()} websitemybusiness. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
