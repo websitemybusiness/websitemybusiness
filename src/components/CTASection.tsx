@@ -3,7 +3,7 @@ import ContactForm from "./ContactForm";
 
 const CTASection = () => {
   return (
-    <section className="relative py-24 bg-gradient-hero overflow-hidden">
+    <section className="relative py-24 bg-gradient-hero overflow-hidden" aria-labelledby="cta-heading">
       {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-glow opacity-40" />
@@ -17,7 +17,7 @@ const CTASection = () => {
             <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               Ready To Talk?
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h2 id="cta-heading" className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
               Let's Build Something{" "}
               <span className="text-gradient">Amazing Together</span>
             </h2>
