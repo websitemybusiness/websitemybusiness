@@ -29,10 +29,10 @@ const CTASection = () => {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" size="lg" asChild>
-                <a href="tel:5551234567">Call Us Now</a>
+                <a href="tel:+2348032655092">Call Us Now</a>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="mailto:hello@webcraft.com">Email Us</a>
+                <a href="https://wa.me/2348027441364" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
               </Button>
             </div>
           </div>
