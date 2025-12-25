@@ -59,8 +59,8 @@ const Footer = () => {
                 <a href="https://wa.me/2348027441364" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">+234 802 744 1364</a>
               </li>
               <li className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-primary mt-0.5" />
-                <span className="text-muted-foreground">hello@websitemybusiness.com</span>
+                <Mail className="w-5 h-5 text-primary mt-0.5" />
+                <a href="mailto:hello@websitemybusiness.com" className="text-muted-foreground hover:text-primary transition-colors">hello@websitemybusiness.com</a>
               </li>
             </ul>
           </div>
