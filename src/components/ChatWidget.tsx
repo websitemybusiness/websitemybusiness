@@ -5,7 +5,7 @@ const ChatWidget = () => {
     // Tawk.to integration script
     const script = document.createElement("script");
     script.async = true;
-    script.src = "https://embed.tawk.to/YOUR_TAWK_PROPERTY_ID/YOUR_WIDGET_ID";
+    script.src = "https://embed.tawk.to/66e501f7ea492f34bc13660e/1jda8acau";
     script.charset = "UTF-8";
     script.setAttribute("crossorigin", "*");
     document.body.appendChild(script);
