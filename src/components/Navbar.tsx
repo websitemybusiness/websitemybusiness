@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
@@ -47,7 +48,7 @@ const Navbar = () => {
             </a>
           ))}
           <Button variant="hero" size="sm" asChild>
-            <a href="#contact">Get Started</a>
+            <Link to="/auth">Get Started</Link>
           </Button>
         </div>
 
@@ -75,7 +76,7 @@ const Navbar = () => {
               </a>
             ))}
             <Button variant="hero" className="mt-2" asChild>
-              <a href="#contact">Get Started</a>
+              <Link to="/auth">Get Started</Link>
             </Button>
           </div>
         </div>
