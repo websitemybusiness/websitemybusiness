@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const navLinks = [
   { href: "#services", label: "Services" },
@@ -10,6 +13,8 @@ const navLinks = [
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut, loading } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +23,14 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out",
+      description: "You have been successfully signed out.",
+    });
+  };
 
   return (
     <nav
@@ -49,6 +62,21 @@ const Navbar = () => {
           <Button variant="hero" size="sm" asChild>
             <a href="#contact">Get Started</a>
           </Button>
+          {!loading && (
+            user ? (
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            ) : (
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/auth">
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Login
+                </Link>
+              </Button>
+            )
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -77,6 +105,21 @@ const Navbar = () => {
             <Button variant="hero" className="mt-2" asChild>
               <a href="#contact">Get Started</a>
             </Button>
+            {!loading && (
+              user ? (
+                <Button variant="outline" onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button variant="outline" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/auth">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Login
+                  </Link>
+                </Button>
+              )
+            )}
           </div>
         </div>
       )}
