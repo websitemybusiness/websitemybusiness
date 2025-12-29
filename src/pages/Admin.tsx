@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useToast } from '@/hooks/use-toast';
 
 interface ContactSubmission {
   id: string;
@@ -25,7 +27,9 @@ const Admin = () => {
   const { isAdmin, loading: adminLoading } = useAdminCheck();
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -61,6 +65,29 @@ const Admin = () => {
       fetchSubmissions();
     }
   }, [isAdmin, adminLoading]);
+
+  const handleDelete = async (id: string) => {
+    setDeletingId(id);
+    const { error } = await supabase
+      .from('contact_submissions')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      toast({
+        title: 'Delete failed',
+        description: 'Could not delete the submission. Please try again.',
+        variant: 'destructive',
+      });
+    } else {
+      setSubmissions(submissions.filter(s => s.id !== id));
+      toast({
+        title: 'Deleted',
+        description: 'Submission has been removed.',
+      });
+    }
+    setDeletingId(null);
+  };
 
   if (authLoading || adminLoading) {
     return (
@@ -125,6 +152,7 @@ const Admin = () => {
                       <TableHead>Contact</TableHead>
                       <TableHead className="hidden md:table-cell">Message</TableHead>
                       <TableHead>Date</TableHead>
+                      <TableHead className="w-[80px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -161,6 +189,41 @@ const Admin = () => {
                             <Calendar className="w-3 h-3" />
                             {format(new Date(submission.created_at), 'MMM d, yyyy')}
                           </div>
+                        </TableCell>
+                        <TableCell>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                disabled={deletingId === submission.id}
+                              >
+                                {deletingId === submission.id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="w-4 h-4" />
+                                )}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete submission?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This will permanently delete the contact submission from {submission.name}. This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(submission.id)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </TableCell>
                       </TableRow>
                     ))}
