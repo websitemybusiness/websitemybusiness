@@ -20,15 +20,20 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
+      console.log("Submitting form data:", formData);
+      
       // Save to database
-      const { error: dbError } = await supabase
+      const { data, error: dbError } = await supabase
         .from("contact_submissions")
         .insert({
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
-        });
+        })
+        .select();
+
+      console.log("Database response:", { data, error: dbError });
 
       if (dbError) {
         console.error("Database error:", dbError);
