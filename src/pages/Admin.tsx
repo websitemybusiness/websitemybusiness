@@ -9,8 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar, Trash2, Eye } from 'lucide-react';
-import { format } from 'date-fns';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar, Trash2, Eye, Search, X } from 'lucide-react';
+import { format, isAfter, isBefore, subDays, startOfDay } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 
 interface ContactSubmission {
@@ -30,8 +32,36 @@ const Admin = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateFilter, setDateFilter] = useState<string>('all');
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+
+  // Filter submissions based on search and date
+  const filteredSubmissions = submissions.filter(submission => {
+    // Search filter
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+      submission.name.toLowerCase().includes(searchLower) ||
+      submission.email.toLowerCase().includes(searchLower) ||
+      submission.phone.includes(searchQuery) ||
+      (submission.message?.toLowerCase().includes(searchLower) ?? false);
+
+    // Date filter
+    let matchesDate = true;
+    const submissionDate = new Date(submission.created_at);
+    const today = startOfDay(new Date());
+
+    if (dateFilter === 'today') {
+      matchesDate = isAfter(submissionDate, today);
+    } else if (dateFilter === 'week') {
+      matchesDate = isAfter(submissionDate, subDays(today, 7));
+    } else if (dateFilter === 'month') {
+      matchesDate = isAfter(submissionDate, subDays(today, 30));
+    }
+
+    return matchesSearch && matchesDate;
+  });
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -131,10 +161,42 @@ const Admin = () => {
               Contact Form Submissions
             </CardTitle>
             <CardDescription>
-              {submissions.length} total submission{submissions.length !== 1 ? 's' : ''}
+              {filteredSubmissions.length} of {submissions.length} submission{submissions.length !== 1 ? 's' : ''}
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Search and Filter Controls */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by name, email, phone, or message..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Filter by date" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All time</SelectItem>
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="week">Last 7 days</SelectItem>
+                  <SelectItem value="month">Last 30 days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {loadingData ? (
               <div className="flex items-center justify-center py-12">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -144,6 +206,10 @@ const Admin = () => {
             ) : submissions.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 No submissions yet. Contact form submissions will appear here.
+              </div>
+            ) : filteredSubmissions.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                No submissions match your search criteria.
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -158,7 +224,7 @@ const Admin = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {submissions.map((submission) => (
+                    {filteredSubmissions.map((submission) => (
                       <TableRow key={submission.id}>
                         <TableCell className="font-medium">
                           {submission.name}
