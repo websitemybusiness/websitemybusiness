@@ -113,8 +113,8 @@ const handler = async (req: Request): Promise<Response> => {
     const safePhone = escapeHtml(phone.trim());
     const safeMessage = escapeHtml(message?.trim() || "No message provided");
 
-    // Send notification email using Resend API
-    const res = await fetch("https://api.resend.com/emails", {
+    // Send notification email to business
+    const notificationRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -135,14 +135,52 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     });
 
-    if (!res.ok) {
-      const error = await res.text();
-      console.error("Resend API error:", error);
-      throw new Error("Failed to send email");
+    if (!notificationRes.ok) {
+      const error = await notificationRes.text();
+      console.error("Resend API error (notification):", error);
+      throw new Error("Failed to send notification email");
     }
 
-    const data = await res.json();
-    console.log("Email sent successfully:", data);
+    const notificationData = await notificationRes.json();
+    console.log("Notification email sent successfully:", notificationData);
+
+    // Send confirmation email to submitter
+    const confirmationRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+      },
+      body: JSON.stringify({
+        from: "Website My Business <noreply@websitemybusiness.com>",
+        to: [email.trim()],
+        subject: "Thank you for contacting us!",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #333;">Thank You, ${safeName}!</h1>
+            <p>We've received your message and appreciate you reaching out to us.</p>
+            <p>Our team will review your inquiry and get back to you as soon as possible, typically within 24-48 hours.</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+            <h3 style="color: #666;">Your Message:</h3>
+            <p style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${safeMessage}</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+            <p style="color: #888; font-size: 14px;">
+              If you have any urgent questions, feel free to call us at +234 8032655092 or message us on WhatsApp at +234 8027441364.
+            </p>
+            <p style="color: #333;">Best regards,<br/>The Website My Business Team</p>
+          </div>
+        `,
+      }),
+    });
+
+    if (!confirmationRes.ok) {
+      const error = await confirmationRes.text();
+      console.error("Resend API error (confirmation):", error);
+      // Don't throw - notification was sent, just log the error
+    } else {
+      const confirmationData = await confirmationRes.json();
+      console.log("Confirmation email sent successfully:", confirmationData);
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
