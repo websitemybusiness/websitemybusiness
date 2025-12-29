@@ -64,30 +64,21 @@ const Navbar = () => {
           <Button variant="hero" size="sm" asChild>
             <a href="#contact">Get Started</a>
           </Button>
-          {!loading && (
-            user ? (
-              <>
-                {isAdmin && (
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link to="/admin">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Admin
-                    </Link>
-                  </Button>
-                )}
-                <Button variant="outline" size="sm" onClick={handleSignOut}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
+          {!loading && user && (
+            <>
+              {isAdmin && (
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/admin">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Link>
                 </Button>
-              </>
-            ) : (
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/auth">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Login
-                </Link>
+              )}
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
               </Button>
-            )
+            </>
           )}
         </div>
 
@@ -117,30 +108,21 @@ const Navbar = () => {
             <Button variant="hero" className="mt-2" asChild>
               <a href="#contact">Get Started</a>
             </Button>
-            {!loading && (
-              user ? (
-                <>
-                  {isAdmin && (
-                    <Button variant="ghost" asChild onClick={() => setIsMobileMenuOpen(false)}>
-                      <Link to="/admin">
-                        <Shield className="w-4 h-4 mr-2" />
-                        Admin
-                      </Link>
-                    </Button>
-                  )}
-                  <Button variant="outline" onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}>
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sign Out
+            {!loading && user && (
+              <>
+                {isAdmin && (
+                  <Button variant="ghost" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link to="/admin">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Admin
+                    </Link>
                   </Button>
-                </>
-              ) : (
-                <Button variant="outline" asChild onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to="/auth">
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Login
-                  </Link>
+                )}
+                <Button variant="outline" onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
                 </Button>
-              )
+              </>
             )}
           </div>
         </div>
