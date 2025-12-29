@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogIn, LogOut } from "lucide-react";
+import { Menu, X, LogIn, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 import { useToast } from "@/hooks/use-toast";
 
 const navLinks = [
@@ -14,6 +15,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut, loading } = useAuth();
+  const { isAdmin } = useAdminCheck();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -64,10 +66,20 @@ const Navbar = () => {
           </Button>
           {!loading && (
             user ? (
-              <Button variant="outline" size="sm" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </Button>
+              <>
+                {isAdmin && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/admin">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Admin
+                    </Link>
+                  </Button>
+                )}
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <Button variant="outline" size="sm" asChild>
                 <Link to="/auth">
@@ -107,10 +119,20 @@ const Navbar = () => {
             </Button>
             {!loading && (
               user ? (
-                <Button variant="outline" onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
+                <>
+                  {isAdmin && (
+                    <Button variant="ghost" asChild onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link to="/admin">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Admin
+                      </Link>
+                    </Button>
+                  )}
+                  <Button variant="outline" onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
               ) : (
                 <Button variant="outline" asChild onClick={() => setIsMobileMenuOpen(false)}>
                   <Link to="/auth">
