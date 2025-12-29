@@ -11,7 +11,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar, Trash2, Eye, Search, X } from 'lucide-react';
+import { Loader2, ArrowLeft, Mail, Phone, MessageSquare, Calendar, Trash2, Eye, Search, X, Download } from 'lucide-react';
 import { format, isAfter, isBefore, subDays, startOfDay } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 
@@ -62,6 +62,51 @@ const Admin = () => {
 
     return matchesSearch && matchesDate;
   });
+
+  const exportToCSV = () => {
+    if (filteredSubmissions.length === 0) {
+      toast({
+        title: 'No data to export',
+        description: 'There are no submissions matching your current filters.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // CSV headers
+    const headers = ['Name', 'Email', 'Phone', 'Message', 'Date'];
+    
+    // CSV rows
+    const rows = filteredSubmissions.map(submission => [
+      `"${submission.name.replace(/"/g, '""')}"`,
+      `"${submission.email.replace(/"/g, '""')}"`,
+      `"${submission.phone.replace(/"/g, '""')}"`,
+      `"${(submission.message || '').replace(/"/g, '""')}"`,
+      `"${format(new Date(submission.created_at), 'yyyy-MM-dd HH:mm:ss')}"`
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `contact-submissions-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: 'Export complete',
+      description: `Exported ${filteredSubmissions.length} submission${filteredSubmissions.length !== 1 ? 's' : ''} to CSV.`,
+    });
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -195,6 +240,14 @@ const Admin = () => {
                   <SelectItem value="month">Last 30 days</SelectItem>
                 </SelectContent>
               </Select>
+              <Button
+                variant="outline"
+                onClick={exportToCSV}
+                disabled={filteredSubmissions.length === 0}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Export CSV
+              </Button>
             </div>
 
             {loadingData ? (
