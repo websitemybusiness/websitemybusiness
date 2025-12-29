@@ -144,7 +144,7 @@ const handler = async (req: Request): Promise<Response> => {
     const notificationData = await notificationRes.json();
     console.log("Notification email sent successfully:", notificationData);
 
-    // Send confirmation email to submitter
+    // Send confirmation email to submitter with branded design
     const confirmationRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -154,21 +154,90 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Website My Business <noreply@websitemybusiness.com>",
         to: [email.trim()],
-        subject: "Thank you for contacting us!",
+        subject: "Thank you for contacting Website My Business!",
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #333;">Thank You, ${safeName}!</h1>
-            <p>We've received your message and appreciate you reaching out to us.</p>
-            <p>Our team will review your inquiry and get back to you as soon as possible, typically within 24-48 hours.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-            <h3 style="color: #666;">Your Message:</h3>
-            <p style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${safeMessage}</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-            <p style="color: #888; font-size: 14px;">
-              If you have any urgent questions, feel free to call us at +234 8032655092 or message us on WhatsApp at +234 8027441364.
-            </p>
-            <p style="color: #333;">Best regards,<br/>The Website My Business Team</p>
-          </div>
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          </head>
+          <body style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f4f4f5;">
+              <tr>
+                <td style="padding: 40px 20px;">
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header with brand color -->
+                    <tr>
+                      <td style="background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%); padding: 40px 40px; text-align: center;">
+                        <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">Website My Business</h1>
+                        <p style="margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">Professional Web Design & SEO Services</p>
+                      </td>
+                    </tr>
+                    
+                    <!-- Main content -->
+                    <tr>
+                      <td style="padding: 40px;">
+                        <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 24px; font-weight: 600;">Thank You, ${safeName}!</h2>
+                        
+                        <p style="margin: 0 0 16px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                          We've received your message and truly appreciate you reaching out to us. Your inquiry is important to us, and our team is already on it.
+                        </p>
+                        
+                        <p style="margin: 0 0 24px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                          You can expect to hear back from us within <strong style="color: #7C3AED;">24-48 hours</strong>.
+                        </p>
+                        
+                        <!-- Message box -->
+                        <div style="background-color: #faf5ff; border-left: 4px solid #7C3AED; padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
+                          <h3 style="margin: 0 0 12px 0; color: #7C3AED; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Your Message</h3>
+                          <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">${safeMessage}</p>
+                        </div>
+                        
+                        <!-- Contact info box -->
+                        <div style="background-color: #f9fafb; border-radius: 12px; padding: 24px; margin-top: 24px;">
+                          <h3 style="margin: 0 0 16px 0; color: #1f2937; font-size: 16px; font-weight: 600;">Need immediate assistance?</h3>
+                          
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tr>
+                              <td style="padding: 8px 0;">
+                                <span style="color: #7C3AED; font-size: 18px;">📞</span>
+                                <span style="color: #4b5563; font-size: 14px; margin-left: 12px;">Call us: <a href="tel:+2348032655092" style="color: #7C3AED; text-decoration: none; font-weight: 500;">+234 803 265 5092</a></span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0;">
+                                <span style="color: #7C3AED; font-size: 18px;">💬</span>
+                                <span style="color: #4b5563; font-size: 14px; margin-left: 12px;">WhatsApp: <a href="https://wa.me/2348027441364" style="color: #7C3AED; text-decoration: none; font-weight: 500;">+234 802 744 1364</a></span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 8px 0;">
+                                <span style="color: #7C3AED; font-size: 18px;">✉️</span>
+                                <span style="color: #4b5563; font-size: 14px; margin-left: 12px;">Email: <a href="mailto:hello@websitemybusiness.com" style="color: #7C3AED; text-decoration: none; font-weight: 500;">hello@websitemybusiness.com</a></span>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                      <td style="background-color: #1f2937; padding: 30px 40px; text-align: center;">
+                        <p style="margin: 0 0 8px 0; color: #ffffff; font-size: 16px; font-weight: 600;">Website My Business</p>
+                        <p style="margin: 0 0 16px 0; color: #9ca3af; font-size: 13px;">Transforming your digital presence</p>
+                        <p style="margin: 0; color: #6b7280; font-size: 12px;">© 2024 Website My Business. All rights reserved.</p>
+                      </td>
+                    </tr>
+                    
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </body>
+          </html>
         `,
       }),
     });
