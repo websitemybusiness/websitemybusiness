@@ -121,7 +121,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Contact Form <onboarding@resend.dev>",
+        from: "Contact Form <noreply@websitemybusiness.com>",
         to: ["hello@websitemybusiness.com"],
         subject: `New Contact Form Submission from ${safeName}`,
         html: `
@@ -152,7 +152,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Website My Business <onboarding@resend.dev>",
+        from: "Website My Business <noreply@websitemybusiness.com>",
         to: [email.trim()],
         subject: "Thank you for contacting Website My Business!",
         html: `
