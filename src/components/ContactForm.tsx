@@ -84,10 +84,9 @@ const ContactForm = () => {
         message: formData.message.trim(),
       };
       
-      const { data, error: dbError } = await supabase
+      const { error: dbError } = await supabase
         .from("contact_submissions")
-        .insert(trimmedData)
-        .select();
+        .insert(trimmedData);
 
       if (dbError) {
         
